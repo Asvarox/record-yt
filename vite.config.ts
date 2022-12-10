@@ -1,6 +1,6 @@
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import react from '@vitejs/plugin-react';
-import analyze from 'rollup-plugin-visualizer';
+import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -8,7 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig({
   plugins: [react(),
     tsconfigPaths(),
-    analyze(),
+    visualizer(),
     basicSsl(),
     splitVendorChunkPlugin(),
   ]

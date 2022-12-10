@@ -23,5 +23,10 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/space-before-function-paren': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/semi': ['error', 'always'],
   }
 }
