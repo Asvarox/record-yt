@@ -11,5 +11,9 @@ export default defineConfig({
     visualizer(),
     basicSsl(),
     splitVendorChunkPlugin(),
-  ]
+  ],
+  build: {
+    outDir: 'build',
+    sourcemap: true,
+  },
 })

@@ -1,0 +1,14 @@
+# See https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
+
+name: setup-node
+description: 'Setups node to the specific version'
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        cache: 'yarn'
+    - run: yarn install
+      shell: bash

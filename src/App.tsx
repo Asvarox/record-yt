@@ -80,7 +80,7 @@ function App() {
 
   return (
         <div className="App">
-           <div>{
+           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>{
                 previousVideos.map(({ id, title }) => (
                     <button onClick={() => setVideo(id)} disabled={id === video} key={id}>{title}</button>
                 ))
@@ -117,7 +117,10 @@ function App() {
             {!isRecording && <button onClick={startRecording}>record</button>}
             {isRecording && <button onClick={stopRecording}>stop recording</button>}
             <button onClick={restartPlayer}>replay</button>
-            <input type="number" step={4} value={lag} onChange={e => setLag(+e.target.value)}/>
+          <div>
+            <input type="number" step={4} value={lag} onChange={e => setLag(+e.target.value)}/><br />
+            <input type={'range'} min={-250} max={250} value={lag} onChange={e => setLag(+e.target.value)} style={{ width: 640 }} />
+          </div>
         </div>
   );
 }
