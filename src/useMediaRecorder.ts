@@ -69,7 +69,7 @@ export function useReactMediaRecorder({
   mediaRecorderOptions = undefined,
   customMediaStream = null,
   stopStreamsOnStop = true,
-  askPermissionOnMount = false
+  askPermissionOnMount = false,
 }: ReactMediaRecorderHookProps): ReactMediaRecorderRenderProps {
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const mediaChunks = useRef<Blob[]>([]);
@@ -83,21 +83,21 @@ export function useReactMediaRecorder({
     setStatus('acquiring_media');
     const requiredMedia: MediaStreamConstraints = {
       audio: typeof audio === 'boolean' ? !!audio : audio,
-      video: typeof video === 'boolean' ? !!video : video
+      video: typeof video === 'boolean' ? !!video : video,
     };
     try {
       if (customMediaStream) {
         mediaStream.current = customMediaStream;
       } else if (screen) {
         const stream = (await window.navigator.mediaDevices.getDisplayMedia({
-          video: video || true
+          video: video || true,
         }));
         stream.getVideoTracks()[0].addEventListener('ended', () => {
           stopRecording();
         });
         if (audio) {
           const audioStream = await window.navigator.mediaDevices.getUserMedia({
-            audio
+            audio,
           });
 
           audioStream
@@ -107,7 +107,7 @@ export function useReactMediaRecorder({
         mediaStream.current = stream;
       } else {
         const stream = await window.navigator.mediaDevices.getUserMedia(
-          requiredMedia
+          requiredMedia,
         );
         mediaStream.current = stream;
       }
@@ -134,14 +134,14 @@ export function useReactMediaRecorder({
                 navigator.mediaDevices.getSupportedConstraints();
       const unSupportedConstraints = Object.keys(mediaType).filter(
         (constraint) =>
-          !(supportedMediaConstraints as { [key: string]: any })[constraint]
+          !(supportedMediaConstraints as { [key: string]: any })[constraint],
       );
 
       if (unSupportedConstraints.length > 0) {
         console.error(
                     `The constraints ${unSupportedConstraints.join(
-                        ','
-                    )} doesn't support on this browser. Please check your ReactMediaRecorder component.`
+                        ',',
+                    )} doesn't support on this browser. Please check your ReactMediaRecorder component.`,
         );
       }
     };
@@ -156,7 +156,7 @@ export function useReactMediaRecorder({
     if (mediaRecorderOptions?.mimeType) {
       if (!MediaRecorder.isTypeSupported(mediaRecorderOptions.mimeType)) {
         console.error(
-          'The specified MIME type you supplied for MediaRecorder doesn\'t support this browser'
+          'The specified MIME type you supplied for MediaRecorder doesn\'t support this browser',
         );
       }
     }
@@ -177,7 +177,7 @@ export function useReactMediaRecorder({
     video,
     getMediaStream,
     mediaRecorderOptions,
-    askPermissionOnMount
+    askPermissionOnMount,
   ]);
 
   // Media Recorder Handlers
@@ -200,7 +200,7 @@ export function useReactMediaRecorder({
         return;
       }
       mediaRecorder.current = new MediaRecorder(
-        mediaStream.current, mediaRecorderOptions ?? undefined
+        mediaStream.current, mediaRecorderOptions ?? undefined,
       );
       mediaRecorder.current.ondataavailable = onRecordingActive;
       mediaRecorder.current.onstop = onRecordingStop;
@@ -226,7 +226,7 @@ export function useReactMediaRecorder({
     const [chunk] = mediaChunks.current;
     const blobProperty: BlobPropertyBag = Object.assign(
       { type: chunk.type },
-      blobPropertyBag ?? (video ? { type: 'video/mp4' } : { type: 'audio/ogg; codecs=opus' })
+      blobPropertyBag ?? (video ? { type: 'video/mp4' } : { type: 'audio/ogg; codecs=opus' }),
     );
     const blob = new Blob(mediaChunks.current, blobProperty);
     const url = URL.createObjectURL(blob);
@@ -293,7 +293,7 @@ export function useReactMediaRecorder({
       }
       setMediaBlobUrl(undefined);
       setStatus('idle');
-    }
+    },
   };
 }
 

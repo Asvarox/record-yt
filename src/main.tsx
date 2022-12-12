@@ -14,12 +14,12 @@ if (import.meta.env.VITE_APP_SENTRY_DSN_URL) {
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
     tracesSampleRate: 1.0,
-    environment: isDev() ? 'development' : isE2E() ? 'e2e' : 'production'
+    environment: isDev() ? 'development' : isE2E() ? 'e2e' : 'production',
   });
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
