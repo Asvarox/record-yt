@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
     '@typescript-eslint/semi': ['error', 'always'],
   }
 }

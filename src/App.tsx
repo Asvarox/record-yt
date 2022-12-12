@@ -3,12 +3,16 @@ import './App.css';
 import YouTube from 'react-youtube';
 import { useReactMediaRecorder } from './useMediaRecorder';
 import createPersistedState from 'use-persisted-state';
+import { useMicrophoneList } from './MicrophoneList';
 
 const useVideoId = createPersistedState<string>('video-id');
 const usePreviousVideos = createPersistedState<Array<{ id: string, title: string }>>('previous-videos');
 const useLag = createPersistedState<number>('lag-id');
 
 function App() {
+  const [selectedDevice, setSelectedDevice] = useState<string | undefined>(undefined);
+  const deviceList = useMicrophoneList();
+
   const [video, setVideo] = useVideoId('jcL38GYrk-I'); // DBeHQfvqO6k
   const [playbackStartedAt, setPlaybackStartedAt] = useState(0);
   const [recordOffset, setRecordOffset] = useState(0);
@@ -17,11 +21,12 @@ function App() {
     audio: {
       echoCancellation: false,
       noiseSuppression: false,
-      autoGainControl: false
+      autoGainControl: false,
+      ...(selectedDevice ? { deviceId: selectedDevice } : {}),
     },
     video: false,
     askPermissionOnMount: true,
-    onStart: () => setRecordStartedAt(performance.now())
+    onStart: () => setRecordStartedAt(performance.now()),
   });
   const [isRecording, setIsRecording] = useState(false);
   const player = useRef<YouTube | null>(null);
@@ -86,7 +91,16 @@ function App() {
                 ))
             }
            </div>
-            <input value={video} onChange={e => setVideo(e.target.value)}/>
+            <input value={video} onChange={e => {
+              const vid = e.target.value;
+              try {
+                const linkUrl = new URL(vid);
+                const vidId = linkUrl.searchParams.get('v');
+                if (vidId) { setVideo(vidId); } else throw new Error('invalid link');
+              } catch (e: any) {
+                setVideo(vid);
+              }
+            }}/>
             <YouTube
                 ref={player}
                 videoId={video}
@@ -120,6 +134,13 @@ function App() {
           <div>
             <input type="number" step={4} value={lag} onChange={e => setLag(+e.target.value)}/><br />
             <input type={'range'} min={-250} max={250} value={lag} onChange={e => setLag(+e.target.value)} style={{ width: 640 }} />
+          </div>
+          <div>
+            <select onChange={e => setSelectedDevice(e.target.value)} value={selectedDevice ?? 'default'}>
+              {deviceList.map(device => <option key={device.deviceId} value={device.deviceId}>
+                {device.label}
+              </option>)}
+            </select>
           </div>
         </div>
   );
